@@ -14,10 +14,10 @@ spec:
     spec:
       containers:
         - name: spring-app
-          image: fulldemo  # No ":latest" tag to avoid pull issues
-          imagePullPolicy: Never  # Important: Do not pull from Docker Hub
+          image: haris444/fulldemo:latest  # Change this to match your Docker Hub repo
           ports:
             - containerPort: 8080
+
           env:
             - name: SPRING_DATASOURCE_URL
               value: jdbc:postgresql://postgres-service:5432/student
