@@ -19,5 +19,8 @@ jobs:
           distribution: 'temurin'  # Use the Temurin JDK (OpenJDK)
           java-version: '17'
 
+      - name: Run Tests with Maven
+        run: mvn test  # Run all tests using H2 database
+
       - name: Build with Maven
         run: mvn clean package  # Runs Maven to build your project
