@@ -9,6 +9,21 @@ jobs:
   build:
     runs-on: ubuntu-latest   # The OS where the pipeline will run
 
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: student
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: 1234
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d student"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3   # Pulls your code from GitHub
@@ -19,8 +34,11 @@ jobs:
           distribution: 'temurin'  # Use the Temurin JDK (OpenJDK)
           java-version: '17'
 
+      - name: Wait for PostgreSQL to be ready
+        run: sleep 10  # Gives PostgreSQL some time to start up
+
       - name: Run Tests with Maven
-        run: mvn test  # Run all tests using H2 database
+        run: mvn test  # Run all tests using PostgreSQL
 
       - name: Build with Maven
         run: mvn clean package  # Runs Maven to build your project
